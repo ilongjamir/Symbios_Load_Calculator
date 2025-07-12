@@ -4,52 +4,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Load Calculator</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#00aaff" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 30px;
-      background: #f9f9f9;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 20px;
-      background: #fff;
-    }
-    th, td {
-      padding: 10px;
-      border: 1px solid #ccc;
-      text-align: center;
-    }
-    th {
-      background: #eee;
-    }
-    button {
-      padding: 8px 16px;
-      margin-right: 10px;
-      cursor: pointer;
-    }
-    .total {
-      font-size: 18px;
-      font-weight: bold;
-    }
+    body { font-family: Arial, sans-serif; padding: 30px; background: #f9f9f9; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; background: #fff; }
+    th, td { padding: 10px; border: 1px solid #ccc; text-align: center; }
+    th { background: #eee; }
+    button { padding: 8px 16px; margin-right: 10px; cursor: pointer; }
+    .total { font-size: 18px; font-weight: bold; }
   </style>
 </head>
 <body>
-
-  <h2>Symbios Green Energy Household Load Calculator</h2>
-
+  <h2>Household Load Calculator</h2>
   <table id="loadTable">
     <thead>
-      <tr>
-        <th>Appliance</th>
-        <th>Load (W)</th>
-        <th>Quantity</th>
-        <th>Total (W)</th>
-      </tr>
+      <tr><th>Appliance</th><th>Load (W)</th><th>Quantity</th><th>Total (W)</th></tr>
     </thead>
     <tbody>
-      <!-- Appliance list without predefined wattages -->
       <tr><td><input type="text" value="LED Light" /></td><td><input type="number" class="watts" /></td><td><input type="number" value="4" class="qty" /></td><td class="rowTotal">0</td></tr>
       <tr><td><input type="text" value="TV" /></td><td><input type="number" class="watts" /></td><td><input type="number" value="1" class="qty" /></td><td class="rowTotal">0</td></tr>
       <tr><td><input type="text" value="Refrigerator" /></td><td><input type="number" class="watts" /></td><td><input type="number" value="1" class="qty" /></td><td class="rowTotal">0</td></tr>
@@ -62,29 +36,19 @@
       <tr><td><input type="text" value="Laptop" /></td><td><input type="number" class="watts" /></td><td><input type="number" value="1" class="qty" /></td><td class="rowTotal">0</td></tr>
     </tbody>
   </table>
-
   <button onclick="addRow()">➕ Add Appliance</button>
   <button onclick="calculateTotal()">🧮 Calculate Total Load</button>
-
   <div class="total" id="totalLoad">Total Load: 0 kW</div>
-
   <script>
     function addRow() {
       const table = document.getElementById("loadTable").getElementsByTagName("tbody")[0];
       const newRow = document.createElement("tr");
-      newRow.innerHTML = `
-        <td><input type="text" placeholder="Custom Appliance" /></td>
-        <td><input type="number" class="watts" /></td>
-        <td><input type="number" value="1" class="qty" /></td>
-        <td class="rowTotal">0</td>
-      `;
+      newRow.innerHTML = '<td><input type="text" placeholder="Custom Appliance" /></td><td><input type="number" class="watts" /></td><td><input type="number" value="1" class="qty" /></td><td class="rowTotal">0</td>';
       table.appendChild(newRow);
     }
-
     function calculateTotal() {
       const rows = document.querySelectorAll("#loadTable tbody tr");
       let grandTotal = 0;
-
       rows.forEach(row => {
         const watts = parseFloat(row.querySelector(".watts").value) || 0;
         const qty = parseFloat(row.querySelector(".qty").value) || 0;
@@ -92,9 +56,12 @@
         row.querySelector(".rowTotal").textContent = total;
         grandTotal += total;
       });
-
       const kW = (grandTotal / 1000).toFixed(2);
       document.getElementById("totalLoad").textContent = `Total Load: ${kW} kW`;
+    }
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('Service Worker Registered'));
     }
   </script>
 </body>
