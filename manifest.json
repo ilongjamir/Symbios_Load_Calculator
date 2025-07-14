@@ -1,6 +1,6 @@
 {
   "name": "Load Calculator",
-  "short_name": "LoadCalc",
+  "short_name": "SGE LoadCalc",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
